@@ -1,4 +1,4 @@
-package com.github.NotMarco97.enterprise_identity_provisioning_platform.dto;
+package com.github.NotMarco97.identity_provisioning_platform.dto;
 
 public class UpdateEmployeeRequest {
     private String department;

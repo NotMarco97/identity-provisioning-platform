@@ -1,39 +1,16 @@
-package com.github.NotMarco97.enterprise_identity_provisioning_platform.entities;
+package com.github.NotMarco97.identity_provisioning_platform.dto;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
-
-@Entity
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class EmployeeResponse {
     private String firstName;
     private String lastName;
-    @Enumerated(EnumType.STRING)
-    private EmployeeStatus status;
+    private String status;
     private String department;
     private String jobTitle;
-    @Column(unique = true)
     private String email;
     private double salary;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-    @Column(unique = true)
+    private String createdAt;
+    private String updatedAt;
     private String employeeId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName(){
         return firstName;
@@ -49,6 +26,14 @@ public class Employee {
 
     public void setLastName(String lastName){
         this.lastName = lastName;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 
     public String getDepartment(){
@@ -83,19 +68,19 @@ public class Employee {
         this.salary = salary;
     }
 
-    public LocalDateTime getCreatedAt(){
+    public String getCreatedAt(){
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt){
+    public void setCreatedAt(String createdAt){
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt(){
+    public String getUpdatedAt(){
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt){
+    public void setUpdatedAt(String updatedAt){
         this.updatedAt = updatedAt;
     }
 
@@ -105,13 +90,5 @@ public class Employee {
 
     public void setEmployeeId(String employeeId){
         this.employeeId = employeeId;
-    }
-
-    public EmployeeStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(EmployeeStatus status) {
-        this.status = status;
     }
 }

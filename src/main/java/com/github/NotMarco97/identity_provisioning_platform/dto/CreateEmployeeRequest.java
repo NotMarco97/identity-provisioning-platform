@@ -1,7 +1,8 @@
-package com.github.NotMarco97.enterprise_identity_provisioning_platform.dto;
+package com.github.NotMarco97.identity_provisioning_platform.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class CreateEmployeeRequest {
 
@@ -13,7 +14,7 @@ public class CreateEmployeeRequest {
     private String department;
     @NotBlank
     private String jobTitle;
-    @NotNull
+    @Positive
     private double salary;
 
     public String getFirstName(){

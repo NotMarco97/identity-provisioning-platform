@@ -1,4 +1,4 @@
-package com.github.NotMarco97.enterprise_identity_provisioning_platform;
+package com.github.NotMarco97.identity_provisioning_platform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

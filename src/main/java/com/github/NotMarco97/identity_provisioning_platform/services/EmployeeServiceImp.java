@@ -1,11 +1,11 @@
-package com.github.NotMarco97.enterprise_identity_provisioning_platform.services;
+package com.github.NotMarco97.identity_provisioning_platform.services;
 
-import com.github.NotMarco97.enterprise_identity_provisioning_platform.dto.CreateEmployeeRequest;
-import com.github.NotMarco97.enterprise_identity_provisioning_platform.dto.EmployeeResponse;
-import com.github.NotMarco97.enterprise_identity_provisioning_platform.dto.UpdateEmployeeRequest;
-import com.github.NotMarco97.enterprise_identity_provisioning_platform.entities.Employee;
-import com.github.NotMarco97.enterprise_identity_provisioning_platform.entities.EmployeeStatus;
-import com.github.NotMarco97.enterprise_identity_provisioning_platform.repositories.EmployeeRepository;
+import com.github.NotMarco97.identity_provisioning_platform.dto.CreateEmployeeRequest;
+import com.github.NotMarco97.identity_provisioning_platform.dto.EmployeeResponse;
+import com.github.NotMarco97.identity_provisioning_platform.dto.UpdateEmployeeRequest;
+import com.github.NotMarco97.identity_provisioning_platform.entities.Employee;
+import com.github.NotMarco97.identity_provisioning_platform.entities.EmployeeStatus;
+import com.github.NotMarco97.identity_provisioning_platform.repositories.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
