@@ -18,6 +18,9 @@ This document describes how the platform authenticates, authorizes, stores sensi
 ### Secure Communication
 - Not implemented yet
 
+### Error Handling
+- The platform does not leak internal details in error responses
+
 ### Security Boundaries
 
 - HR system owns employee data

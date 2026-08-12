@@ -20,5 +20,8 @@
 ### Record Provisioning
 -Provisioning status and audit information are stored withing PostgreSQL.
 
+### Rejection Result
+The platform returns invalid requests.
+
 ### Return Result
 The platform returns the provisioning result to Postman.

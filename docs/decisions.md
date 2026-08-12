@@ -90,5 +90,22 @@ Accepted as out of scope.
 ### Decision
 CreateEmployeeRequest fields are required.
 
+### Why
+They are the needed fields to begin provisioning.
+
 ---
+
+### Decision
+GlobalExceptionHandler handles all exceptions.
+
+### Why
+Try/catch blocks repeated in controller methods, with inconsistent responses across endpoints.
+
+### Trade-offs
+
+### pros
+- Decouples responsibility
+- Makes maintainability easier
+- Easier to modify
+___
 

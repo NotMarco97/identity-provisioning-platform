@@ -48,3 +48,18 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## v0.3
+
+### Added
+* Added Global Exception handler
+* Added error exception DTO
+* Added unit tests for business logic
+* Added unit tests for employee controller
+
+### Changed
+* none
+
+### Fixed 
+* Service implementation was replaced for the interface in controller
+
+

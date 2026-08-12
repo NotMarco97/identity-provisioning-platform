@@ -61,17 +61,11 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.2
+**Version:** v0.3
 
 Completed in this version:
 
-* Working CRUD capability
-* POST   /employees
-* GET    /employees
-* GET    /employees/{employeeId}
-* PATCH  /employees/{employeeId}
-* DELETE /employees/{employeeId}
-* Established identifier ownership 
+* Working Global Exception Handler
 
 ---
 
@@ -80,9 +74,6 @@ Completed in this version:
 This project is developed using incremental versioned releases.
 
 Upcoming milestones include:
-
-* Employee CRUD API
-* Validation and exception handling
 * Provisioning workflow
 * Audit logging
 * Microsoft Graph integration
@@ -134,7 +125,6 @@ Detailed documentation for this project can be found inside the '/docs' director
 3. Update the application configuration.
 4. Run the Spring Boot application.
 5. Verify the application starts successfully.
-6. Test the health check endpoint.
 
 ---
 
