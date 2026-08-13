@@ -61,11 +61,12 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.3
+**Version:** v0.4
 
 Completed in this version:
 
-* Working Global Exception Handler
+* Working access/template model
+* Employee request produces provisioning plan
 
 ---
 

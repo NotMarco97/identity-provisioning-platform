@@ -15,13 +15,16 @@
 - Role
 
 ### Provision Identity
-- The platform communicates with Postman.
+The platform communicates with Postman.
 
 ### Record Provisioning
--Provisioning status and audit information are stored withing PostgreSQL.
+Provisioning status and audit information are stored withing PostgreSQL.
 
 ### Rejection Result
 The platform returns invalid requests.
 
 ### Return Result
 The platform returns the provisioning result to Postman.
+
+### Unit Test
+Provisioning plan is displayed in unit tests.
