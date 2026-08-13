@@ -5,6 +5,10 @@ import com.github.NotMarco97.identity_provisioning_platform.entities.Provisionin
 import com.github.NotMarco97.identity_provisioning_platform.repositories.ProvisioningRequestRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 @Service
 public class ProvisioningRequestServiceImp implements ProvisioningRequestService {
     private final ProvisioningRequestRepository provisioningRequestRepository;
@@ -13,13 +17,30 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
         this.provisioningRequestRepository = provisioningRequestRepository;
     }
 
+    private final Map<ProvisioningRequestStatus, Set<ProvisioningRequestStatus>> legalTransaction = Map.of(
+            ProvisioningRequestStatus.RECEIVED, Set.of(ProvisioningRequestStatus.VALIDATED, ProvisioningRequestStatus.FAILED),
+            ProvisioningRequestStatus.VALIDATED, Set.of(ProvisioningRequestStatus.PLANNED, ProvisioningRequestStatus.FAILED),
+            ProvisioningRequestStatus.PLANNED, Set.of(ProvisioningRequestStatus.PENDING, ProvisioningRequestStatus.FAILED),
+            ProvisioningRequestStatus.PENDING, Set.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED));
+
     @Override
     public ProvisioningRequest createProvisioningRequest(String employeeId) {
-        return null;
+        ProvisioningRequest provisioningRequest = new ProvisioningRequest();
+        provisioningRequest.setEmployeeId(employeeId);
+        provisioningRequest.setStatus(ProvisioningRequestStatus.RECEIVED);
+
+        return provisioningRequestRepository.save(provisioningRequest);
     }
 
     @Override
     public void transitionTo(Long requestId, ProvisioningRequestStatus status) {
+            ProvisioningRequest provisioningRequest = provisioningRequestRepository.findById(requestId).orElseThrow();
 
+            if(!legalTransaction.getOrDefault(provisioningRequest.getStatus(), Set.of()).contains(status)){
+                throw new IllegalStateException();
+            }
+
+            provisioningRequest.setStatus(status);
+            provisioningRequestRepository.save(provisioningRequest);
     }
 }
