@@ -109,3 +109,19 @@ Try/catch blocks repeated in controller methods, with inconsistent responses acr
 - Easier to modify
 ___
 
+# Release v0.4
+
+---
+
+# Release v0.5 
+
+### None
+
+---
+
+### Decision
+Provisioning request is an entity.
+
+### Decision
+Provisioning request business logic lives outside the entity.
+
