@@ -110,18 +110,18 @@ Try/catch blocks repeated in controller methods, with inconsistent responses acr
 ___
 
 # Release v0.4
+### None
 
 ---
 
 # Release v0.5 
-
-### None
-
----
 
 ### Decision
 Provisioning request is an entity.
 
 ### Decision
 Provisioning request business logic lives outside the entity.
+
+### Decision
+Idempotency was added to provisioning request.
 

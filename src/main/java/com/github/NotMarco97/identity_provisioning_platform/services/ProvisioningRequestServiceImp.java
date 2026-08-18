@@ -6,6 +6,7 @@ import com.github.NotMarco97.identity_provisioning_platform.repositories.Provisi
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,13 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
 
     @Override
     public ProvisioningRequest createProvisioningRequest(String employeeId) {
+        List<ProvisioningRequest> activeRequest = provisioningRequestRepository.findByEmployeeIdAndStatusNotIn(employeeId,
+                                                    List.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED));
+
+        if(activeRequest.isEmpty()){
+            throw new IllegalStateException("An active provisioning request already exists.");
+        }
+
         ProvisioningRequest provisioningRequest = new ProvisioningRequest();
         provisioningRequest.setEmployeeId(employeeId);
         provisioningRequest.setStatus(ProvisioningRequestStatus.RECEIVED);
