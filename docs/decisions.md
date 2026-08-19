@@ -3,9 +3,108 @@
 
 ---
 
-## Design goals
-
 The design principles that guided this project were how, why, and trade-offs. This approach was taken to evaluate design that satisfies its purpose with consideration to trade-offs. 
+
+---
+
+# Release v0.5
+
+### Decision
+Provisioning request is an entity.
+
+### Why
+The entity is persistent because it must keep track of its legal states.
+
+### Decision
+Idempotency was added to provisioning request.
+
+### Why
+The provisioning request must not take another active request of the same employee in progress. 
+
+### Decision
+A synchronous approach was taken for requests.
+
+### Why 
+It ensures that each state of the provisioning request is completed and ensured.
+
+---
+
+# Release v0.4
+### None
+
+---
+
+# Release v0.3
+
+---
+
+### Decision
+CreateEmployeeRequest fields are required.
+
+### Why
+They are the needed fields to begin provisioning.
+
+---
+
+### Decision
+GlobalExceptionHandler handles all exceptions.
+
+### Why
+Try/catch blocks repeated in controller methods, with inconsistent responses across endpoints.
+
+### Trade-offs
+
+### pros
+- Decouples responsibility
+- Makes maintainability easier
+- Easier to modify
+___
+
+
+# Release v0.2
+
+---
+### Decision
+HR owns employeeId and PostgreSQL owns Id.
+
+### Why
+This protects data from being leaked outside ownership boundaries.
+
+### Trade-offs
+
+#### Pros
+- Boundaries
+- Security
+
+#### Cons
+- Requires more maintenance
+- Adds complexity to data sharing
+
+---
+
+### Decision
+DTO will handle LocalDateTime formatting.
+
+### Why
+To control the formatting for HR's sake instead of outputting default LocalDateTime formatting.
+
+---
+
+### Decision
+Email generation does not filter inappropriate name combinations.
+
+### Why
+Accepted as out of scope.
+
+### Trade-offs
+
+#### Pros
+- Reduces complexity
+
+#### Cons
+- Manual intervention
+- Momentary existence of an inappropriate email
+
 
 ---
 
@@ -37,91 +136,7 @@ This establishes a single source of truth for employee data and keeps the platfo
 #### Cons
 - Requires integration with an external system
 ---
-# Release v0.2
 
----
-### Decision
-HR owns employeeId and PostgreSQL owns Id.
 
-### Why
-This protects data from being leaked outside ownership boundaries.
 
-### Trade-offs
-
-#### Pros
-- Boundaries 
-- Security
-
-#### Cons
-- Requires more maintenance
-- Adds complexity to data sharing
-
----
-
-### Decision
-DTO will handle LocalDateTime formatting.
-
-### Why
-To control the formatting for HR's sake instead of outputting default LocalDateTime formatting.
-
----
-
-### Decision
-Email generation does not filter inappropriate name combinations.
-
-### Why
-Accepted as out of scope.
-
-### Trade-offs
-
-#### Pros 
-- Reduces complexity 
-
-#### Cons
-- Manual intervention
-- Momentary existence of an inappropriate email
-
----
-
-# Release v0.3
-
----
-
-### Decision
-CreateEmployeeRequest fields are required.
-
-### Why
-They are the needed fields to begin provisioning.
-
----
-
-### Decision
-GlobalExceptionHandler handles all exceptions.
-
-### Why
-Try/catch blocks repeated in controller methods, with inconsistent responses across endpoints.
-
-### Trade-offs
-
-### pros
-- Decouples responsibility
-- Makes maintainability easier
-- Easier to modify
-___
-
-# Release v0.4
-### None
-
----
-
-# Release v0.5 
-
-### Decision
-Provisioning request is an entity.
-
-### Decision
-Provisioning request business logic lives outside the entity.
-
-### Decision
-Idempotency was added to provisioning request.
 

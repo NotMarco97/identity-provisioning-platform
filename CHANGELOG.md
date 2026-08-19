@@ -3,11 +3,27 @@
 All notable changes to this project will be documented in this file.
 
 ---
+## v0.5
+
+### Added
+
+* Added Provisioning request entity
+* Added Provisioning request business logic
+* Added provisioning request repository
+* Added provisioning request unit tests
+
+### Changed
+* Minor documentation fixes
+
+### Fixed
+* none
+
 ## v0.4
 
 ### Added
 
 * Added access template
+* Added provisioning plan resolver
 * Added provisioning plan
 * Added unit tests for provisioning plan
 

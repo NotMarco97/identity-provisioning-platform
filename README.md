@@ -61,12 +61,11 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.4
+**Version:** v0.5
 
 Completed in this version:
 
-* Working access/template model
-* Employee request produces provisioning plan
+* Provisioning Requests
 
 ---
 
