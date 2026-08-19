@@ -29,7 +29,7 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
         List<ProvisioningRequest> activeRequest = provisioningRequestRepository.findByEmployeeIdAndStatusNotIn(employeeId,
                                                     List.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED));
 
-        if(activeRequest.isEmpty()){
+        if(!activeRequest.isEmpty()){
             throw new IllegalStateException("An active provisioning request already exists.");
         }
 
