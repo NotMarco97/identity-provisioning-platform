@@ -1,10 +1,13 @@
 package com.github.NotMarco97.identity_provisioning_platform.services;
 
+import com.github.NotMarco97.identity_provisioning_platform.entities.AuditEvent;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequest;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequestStatus;
+import com.github.NotMarco97.identity_provisioning_platform.repositories.AuditEventRepository;
 import com.github.NotMarco97.identity_provisioning_platform.repositories.ProvisioningRequestRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +16,11 @@ import java.util.Set;
 @Service
 public class ProvisioningRequestServiceImp implements ProvisioningRequestService {
     private final ProvisioningRequestRepository provisioningRequestRepository;
+    private final AuditEventServiceImp auditEventServiceImp;
 
-    public ProvisioningRequestServiceImp(ProvisioningRequestRepository provisioningRequestRepository) {
+    public ProvisioningRequestServiceImp(ProvisioningRequestRepository provisioningRequestRepository, AuditEventServiceImp auditEventServiceImp) {
         this.provisioningRequestRepository = provisioningRequestRepository;
+        this.auditEventServiceImp = auditEventServiceImp;
     }
 
     private final Map<ProvisioningRequestStatus, Set<ProvisioningRequestStatus>> legalTransaction = Map.of(
@@ -37,18 +42,42 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
         provisioningRequest.setEmployeeId(employeeId);
         provisioningRequest.setStatus(ProvisioningRequestStatus.RECEIVED);
 
-        return provisioningRequestRepository.save(provisioningRequest);
+        ProvisioningRequest savedRequest = provisioningRequestRepository.save(provisioningRequest);
+        AuditEvent auditEvent = new AuditEvent();
+        auditEvent.setActor("System");
+        auditEvent.setOutcome("SUCCESS");
+        auditEvent.setRequestId(provisioningRequest.getId());
+        auditEvent.setStatusChange("REQUEST_CREATED");
+        auditEvent.setTargetEmployee(savedRequest.getEmployeeId());
+        auditEventServiceImp.recordEvent(auditEvent);
+
+        return savedRequest;
     }
 
     @Override
     public void transitionTo(Long requestId, ProvisioningRequestStatus status) {
-            ProvisioningRequest provisioningRequest = provisioningRequestRepository.findById(requestId).orElseThrow();
+        ProvisioningRequest provisioningRequest = provisioningRequestRepository.findById(requestId).orElseThrow();
 
             if(!legalTransaction.getOrDefault(provisioningRequest.getStatus(), Set.of()).contains(status)){
+                AuditEvent auditEvent = new AuditEvent();
+                auditEvent.setActor("System");
+                auditEvent.setRequestId(provisioningRequest.getId());
+                auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
+                auditEvent.setStatusChange("STATUS_CHANGED_TO_FAILED");
+                auditEvent.setOutcome("FAILED");
+                auditEventServiceImp.recordEvent(auditEvent);
                 throw new IllegalStateException();
             }
 
             provisioningRequest.setStatus(status);
             provisioningRequestRepository.save(provisioningRequest);
+
+        AuditEvent auditEvent = new AuditEvent();
+        auditEvent.setActor("System");
+        auditEvent.setOutcome("SUCCESS");
+        auditEvent.setRequestId(provisioningRequest.getId());
+        auditEvent.setStatusChange("REQUEST_CHANGED_TO_" + provisioningRequest.getStatus().toString());
+        auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
+        auditEventServiceImp.recordEvent(auditEvent);
     }
 }
