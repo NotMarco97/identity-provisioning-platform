@@ -18,10 +18,10 @@
 The platform communicates with Postman.
 
 ### Record Provisioning
-Provisioning status and audit information are stored withing PostgreSQL.
+Provisioning status and audit information are stored within PostgreSQL.
 
 ### Rejection Result
-The platform returns invalid requests.
+The platform returns invalid requests and an audit event.
 
 ### Return Result
 The platform returns the provisioning result to Postman.

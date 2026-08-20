@@ -3,12 +3,32 @@
 All notable changes to this project will be documented in this file.
 
 ---
+
+### v0.6
+
+### Added
+* Added audit event entity
+* Added audit event interface
+* Added audit event business logic
+* Added audit event repository
+* Wired audit events in provisioning requests
+* Wired audit events in request state transitions
+* Wired audit events in provisioning business logic exceptions
+* Added unit testing for any audit event
+
+### Changed
+* none
+
+### Fixed
+* Minor documentation details
+
 ## v0.5
 
 ### Added
 
 * Added Provisioning request entity
 * Added Provisioning request business logic
+* Added provisioning request interface
 * Added provisioning request repository
 * Added provisioning request unit tests
 

@@ -61,11 +61,12 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.5
+**Version:** v0.6
 
 Completed in this version:
 
-* Provisioning Requests
+* Working audit event for each provisioning request.
+* Working audit event for request transitions and exceptions.
 
 ---
 

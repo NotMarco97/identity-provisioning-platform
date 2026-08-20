@@ -7,6 +7,29 @@ The design principles that guided this project were how, why, and trade-offs. Th
 
 ---
 
+# Release v0.6
+
+### Decision
+Did not implement atomicity in provisioning request business logic
+
+### Why
+Audit events are wired in provisioning request business logic and it must live within failures.
+
+### Decision
+Audit event service is decoupled from provisioning request.
+
+### Why
+To keep single responsibility and have audit event retain ownership of all events.
+
+### Trade-offs
+
+### pros
+- Decouples responsibility
+- Makes maintainability easier
+- Easier to modify
+
+---
+
 # Release v0.5
 
 ### Decision
