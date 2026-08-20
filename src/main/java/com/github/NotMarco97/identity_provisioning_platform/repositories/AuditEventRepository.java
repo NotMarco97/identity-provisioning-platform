@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AuditEventRepository extends JpaRepository<AuditEvent, Long> {
     List<AuditEvent> findByRequestId(Long requestId);
+    List<AuditEvent> findByEmployeeId(Long employeeId);
 }

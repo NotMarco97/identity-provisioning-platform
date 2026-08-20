@@ -23,4 +23,9 @@ public class AuditEventServiceImp implements AuditEventService {
     public List<AuditEvent> findByRequestId(Long requestId) {
         return auditEventRepository.findByRequestId(requestId);
     }
+
+    @Override
+    public List<AuditEvent> findByEmployeeId(Long employeeId) {
+        return auditEventRepository.findByEmployeeId(employeeId);
+    }
 }

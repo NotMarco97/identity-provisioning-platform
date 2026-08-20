@@ -35,6 +35,12 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
                                                     List.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED));
 
         if(!activeRequest.isEmpty()){
+            AuditEvent auditEvent = new AuditEvent();
+            auditEvent.setActor("System");
+            auditEvent.setOutcome("FAILED");
+            auditEvent.setStatusChange("REQUEST_CREATION_BLOCKED");
+            auditEvent.setTargetEmployee(employeeId);
+            auditEventServiceImp.recordEvent(auditEvent);
             throw new IllegalStateException("An active provisioning request already exists.");
         }
 

@@ -1,5 +1,6 @@
 package com.github.NotMarco97.identity_provisioning_platform.services;
 
+import com.github.NotMarco97.identity_provisioning_platform.entities.AuditEvent;
 import com.github.NotMarco97.identity_provisioning_platform.entities.Employee;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequest;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequestStatus;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,8 @@ import static org.mockito.Mockito.*;
 class ProvisioningRequestServiceImpTest {
     @Mock
     private ProvisioningRequestRepository provisioningRequestRepository;
+    @Mock
+    private AuditEventServiceImp auditEventServiceImp;
 
     @InjectMocks
     private ProvisioningRequestServiceImp provisioningRequestServiceImp;
@@ -42,6 +46,10 @@ class ProvisioningRequestServiceImpTest {
 
     @Test
     void CreateProvisioningShouldSucceed(){
+        when(provisioningRequestRepository.findByEmployeeIdAndStatusNotIn("EMP-0001",
+                List.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED)))
+                .thenReturn(List.of());
+
         doAnswer(invocation-> {ProvisioningRequest ProvisioningRequestARG = invocation.getArgument(0);
             ProvisioningRequestARG.setId(1L);
             ProvisioningRequestARG.setUpdatedAt(LocalDateTime.now());
@@ -82,6 +90,63 @@ class ProvisioningRequestServiceImpTest {
 
         assertEquals(ProvisioningRequestStatus.PENDING,  request.getStatus());
 
+    }
+
+    @Test
+    void createProvisioningRequestShouldRecordAuditEvent_OnSuccess() {
+        when(provisioningRequestRepository.findByEmployeeIdAndStatusNotIn("EMP-0001",
+                List.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED)))
+                .thenReturn(List.of());
+
+        doAnswer(invocation-> {ProvisioningRequest ProvisioningRequestARG = invocation.getArgument(0);
+            ProvisioningRequestARG.setId(1L);
+            ProvisioningRequestARG.setUpdatedAt(LocalDateTime.now());
+            ProvisioningRequestARG.setCreatedAt(LocalDateTime.now());
+            return ProvisioningRequestARG;}).when(provisioningRequestRepository).save(any(ProvisioningRequest.class));
+
+        provisioningRequestServiceImp.createProvisioningRequest("EMP-0001");
+
+        verify(auditEventServiceImp).recordEvent(any(AuditEvent.class));
+    }
+
+    @Test
+    void createProvisioningRequest409ShouldRecordAuditEvent_OnInvalidEmployeeId() {
+        ProvisioningRequest provisioningRequest = new ProvisioningRequest();
+        provisioningRequest.setEmployeeId("EMP-0001");
+        provisioningRequest.setStatus(ProvisioningRequestStatus.PENDING);
+
+        when(provisioningRequestRepository.findByEmployeeIdAndStatusNotIn("EMP-0001", List.of(ProvisioningRequestStatus.COMPLETED, ProvisioningRequestStatus.FAILED)))
+                .thenReturn(List.of(provisioningRequest));
+
+        assertThrows(IllegalStateException.class,
+                () -> provisioningRequestServiceImp.createProvisioningRequest("EMP-0001"));
+
+        verify(auditEventServiceImp).recordEvent(any(AuditEvent.class));
+
+    }
+
+    @Test
+    void transitionToSuccessShouldRecordAuditEvent(){
+        ProvisioningRequest request = new ProvisioningRequest();
+        request.setStatus(ProvisioningRequestStatus.PLANNED);
+
+        when(provisioningRequestRepository.findById(1L)).thenReturn(Optional.of(request));
+
+        provisioningRequestServiceImp.transitionTo(1L, ProvisioningRequestStatus.PENDING);
+
+        verify(auditEventServiceImp).recordEvent(any(AuditEvent.class));
+    }
+
+    @Test
+    void transitionToInvalidStatus409_WhenTransactionNotAllowed_ShouldRecordAuditEvent() {
+        ProvisioningRequest request = new ProvisioningRequest();
+        request.setStatus(ProvisioningRequestStatus.PENDING);
+        when(provisioningRequestRepository.findById(1L)).thenReturn(Optional.of(request));
+
+        assertThrows(IllegalStateException.class,
+                () -> provisioningRequestServiceImp.transitionTo(1L, ProvisioningRequestStatus.RECEIVED));
+
+        verify(auditEventServiceImp).recordEvent(any(AuditEvent.class));
     }
 
 }
