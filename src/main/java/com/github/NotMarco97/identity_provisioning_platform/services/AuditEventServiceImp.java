@@ -25,7 +25,7 @@ public class AuditEventServiceImp implements AuditEventService {
     }
 
     @Override
-    public List<AuditEvent> findByEmployeeId(Long employeeId) {
-        return auditEventRepository.findByEmployeeId(employeeId);
+    public List<AuditEvent> findByTargetEmployee(String targetEmployee) {
+        return auditEventRepository.findByTargetEmployee(targetEmployee);
     }
 }

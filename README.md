@@ -76,7 +76,6 @@ This project is developed using incremental versioned releases.
 
 Upcoming milestones include:
 * Provisioning workflow
-* Audit logging
 * Microsoft Graph integration
 * Azure deployment
 * Production readiness review
@@ -126,6 +125,7 @@ Detailed documentation for this project can be found inside the '/docs' director
 3. Update the application configuration.
 4. Run the Spring Boot application.
 5. Verify the application starts successfully.
+6. Use Postman to call an endpoint.
 
 ---
 

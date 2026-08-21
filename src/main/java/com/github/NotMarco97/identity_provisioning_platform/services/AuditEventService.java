@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface AuditEventService {
     void recordEvent(AuditEvent auditEvent);
     List<AuditEvent> findByRequestId(Long requestId);
-    List<AuditEvent> findByEmployeeId(Long employeeId);
+    List<AuditEvent> findByTargetEmployee(String targetEmployee);
 }

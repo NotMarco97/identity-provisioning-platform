@@ -5,25 +5,42 @@ import com.github.NotMarco97.identity_provisioning_platform.dto.EmployeeResponse
 import com.github.NotMarco97.identity_provisioning_platform.dto.UpdateEmployeeRequest;
 import com.github.NotMarco97.identity_provisioning_platform.services.EmployeeService;
 import com.github.NotMarco97.identity_provisioning_platform.services.EmployeeServiceImp;
+import com.github.NotMarco97.identity_provisioning_platform.services.IdempotencyRecordService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final IdempotencyRecordService idempotencyRecordService;
+    private final ObjectMapper objectMapper;
 
-    public EmployeeController(EmployeeService employeeService) {
+
+    public EmployeeController(EmployeeService employeeService,  IdempotencyRecordService idempotencyRecordService, ObjectMapper objectMapper) {
         this.employeeService = employeeService;
+        this.idempotencyRecordService = idempotencyRecordService;
+        this.objectMapper = objectMapper;
     }
 
 
     @PostMapping()
-    public EmployeeResponse createEmployee(@Valid @RequestBody CreateEmployeeRequest createEmployeeRequest){
-        return employeeService.createEmployee(createEmployeeRequest);
+    public EmployeeResponse createEmployee(@RequestHeader("Idempotency-Key") String key, @Valid @RequestBody CreateEmployeeRequest createEmployeeRequest){
+        Optional<String> exists = idempotencyRecordService.checkForExistingKey(key);
+        if(exists.isPresent()){
+            return objectMapper.readValue(exists.get(), EmployeeResponse.class);
+        }
+
+        idempotencyRecordService.markInProgress(key);
+        EmployeeResponse employeeResponse = employeeService.createEmployee(createEmployeeRequest);
+        idempotencyRecordService.markCompleted(key, objectMapper.writeValueAsString(employeeResponse));
+
+        return employeeResponse;
     }
 
     @GetMapping()
