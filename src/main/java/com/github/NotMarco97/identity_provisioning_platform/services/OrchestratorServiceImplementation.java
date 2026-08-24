@@ -13,11 +13,14 @@ public class OrchestratorServiceImplementation implements OrchestratorService {
     private final EmployeeServiceImp employeeServiceImp;
     private final ProvisioningPlanResolver provisioningPlanResolver;
     private final ProvisioningRequestServiceImp provisioningRequestServiceImp;
+    private final GraphProviderService graphProviderService;
 
-    public OrchestratorServiceImplementation(EmployeeServiceImp employeeServiceImp, ProvisioningRequestServiceImp provisioningRequestServiceImp, ProvisioningPlanResolver provisioningPlanResolver) {
+    public OrchestratorServiceImplementation(EmployeeServiceImp employeeServiceImp, ProvisioningRequestServiceImp provisioningRequestServiceImp,
+                                             ProvisioningPlanResolver provisioningPlanResolver,  GraphProviderService graphProviderService) {
         this.employeeServiceImp = employeeServiceImp;
         this.provisioningPlanResolver = provisioningPlanResolver;
         this.provisioningRequestServiceImp = provisioningRequestServiceImp;
+        this.graphProviderService = graphProviderService;
     }
 
     @Override
@@ -26,9 +29,17 @@ public class OrchestratorServiceImplementation implements OrchestratorService {
         provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.VALIDATED);
 
         EmployeeResponse employeeResponse = employeeServiceImp.findByEmployeeId(employeeId);
-       ProvisioningPlan provisioningPlan = provisioningPlanResolver.resolvePlan(employeeResponse.getDepartment());
+        ProvisioningPlan provisioningPlan = provisioningPlanResolver.resolvePlan(employeeResponse.getDepartment());
         provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.PLANNED);
 
+        provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.PENDING);
+
+        try{
+            graphProviderService.createUser(employeeId, provisioningPlan);
+            provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.COMPLETED);
+        }catch (RuntimeException e){
+            provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
+        }
 
     }
 }
