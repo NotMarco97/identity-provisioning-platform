@@ -28,7 +28,6 @@ public class EmployeeController {
         this.objectMapper = objectMapper;
     }
 
-
     @PostMapping()
     public EmployeeResponse createEmployee(@RequestHeader("Idempotency-Key") String key, @Valid @RequestBody CreateEmployeeRequest createEmployeeRequest){
         Optional<String> exists = idempotencyRecordService.checkForExistingKey(key);
