@@ -6,6 +6,72 @@
 The design principles that guided this project were how, why, and trade-offs. This approach was taken to evaluate design that satisfies its purpose with consideration to trade-offs. 
 
 ---
+# Release v0.7
+
+### Decision 
+An HR/caller generates and owns the idempotency key - IdempotencyRecord persists the provided key.
+
+### Why
+To prevent a duplicate employee and race condition from happening.
+
+### Trade-Offs
+
+### Pros
+- Established ownership boundaries
+- Prevents duplicate employees
+- A persistent record of each idempotency key
+
+### Cons
+- The caller must provide a key
+
+### Decision
+The business logic for the persistent idempotency key, lives in its own service. 
+
+### Why
+Promotes decoupling and allows changes from other services to not impact the key's business logic. 
+
+### Decision
+HR/caller receives a snapshot of an employee response associated with the idemptoency record.
+
+### Why
+The caller only cares about the employee's creation.
+
+### Trade-offs
+
+### Pros
+- The caller receives a non changed response
+- Any changes during the caller not receiving the response yet, gets discarded from the response
+- Decoupled idempotency record to preserve a response
+
+### Cons
+- Complexity
+
+### Decision
+The orchestrator does not need perstistance/entity.
+
+### Why
+The orchestrator is a pure coordinator to wire the platform's lifecycle.
+
+### Decision
+Fake graph provider provides custom exceptions - does not mock the real mechanics of groups/license.
+
+### Why
+The platform does have ownership of assigning the access plates to an employee - Microsoft Graph owns this mechanic.
+
+### Decision 
+Orchestrator must be called before markCompleted state in createEmployee mapping
+
+### Why
+Prevents a bug where the orchestrator might never be called if the idempotency record state is marked as completed. 
+
+### Decision
+Unit testing was only based of the orchestrators outcomes.
+
+### Why
+Other mechanics such as transitioning through other states, has been unit tested previously - orchestrator trusts those services. 
+
+
+---
 
 # Release v0.6
 

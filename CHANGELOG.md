@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+### v0.7 - Provisioning Orchestration & Mocked Graph Simulation
+
+### Added
+* Added idempotency key in createEmployee mapping
+* Added idempotency entity
+* Added idempotency business logic
+* Added mocked graph provider business logic
+* Added orchestrator business logic
+* Wired provisioning requests in the orchestrator
+* Wired employee service in the orchestrator 
+* Wired provisioning plan resolver in the orchestrator
+* Wired graph service in the orchestrator
+* Wired the orchestrator trigger in createEmployee mapping
+* Added multiple exceptions that the mocked graph triggers
+* Added unit testing for each exception state in the orchestrator 
+* Added unit testing for the happy path in the orchestrator
+
+### Changed
+* none
+
+### Fixed
+* Classes use the interface instead of the implementation
+
+---
+
 ### v0.6
 
 ### Added

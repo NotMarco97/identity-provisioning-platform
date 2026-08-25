@@ -61,12 +61,11 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.6
+**Version:** v0.7
 
 Completed in this version:
 
-* Working audit event for each provisioning request.
-* Working audit event for request transitions and exceptions.
+* A working mocked lifecycle for the identity platform.
 
 ---
 
