@@ -1,22 +1,22 @@
 package com.github.NotMarco97.identity_provisioning_platform.services;
 
 import com.github.NotMarco97.identity_provisioning_platform.dto.EmployeeResponse;
-import com.github.NotMarco97.identity_provisioning_platform.entities.Employee;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequest;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequestStatus;
+import com.github.NotMarco97.identity_provisioning_platform.graph.GraphProvider;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlan;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlanResolver;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrchestratorServiceImplementation implements OrchestratorService {
-    private final EmployeeServiceImp employeeServiceImp;
+    private final EmployeeService employeeServiceImp;
     private final ProvisioningPlanResolver provisioningPlanResolver;
-    private final ProvisioningRequestServiceImp provisioningRequestServiceImp;
-    private final GraphProviderService graphProviderService;
+    private final ProvisioningRequestService provisioningRequestServiceImp;
+    private final GraphProvider graphProviderService;
 
-    public OrchestratorServiceImplementation(EmployeeServiceImp employeeServiceImp, ProvisioningRequestServiceImp provisioningRequestServiceImp,
-                                             ProvisioningPlanResolver provisioningPlanResolver,  GraphProviderService graphProviderService) {
+    public OrchestratorServiceImplementation(EmployeeService employeeServiceImp, ProvisioningRequestService provisioningRequestServiceImp,
+                                             ProvisioningPlanResolver provisioningPlanResolver,  GraphProvider graphProviderService) {
         this.employeeServiceImp = employeeServiceImp;
         this.provisioningPlanResolver = provisioningPlanResolver;
         this.provisioningRequestServiceImp = provisioningRequestServiceImp;

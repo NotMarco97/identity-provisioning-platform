@@ -27,7 +27,7 @@ class ProvisioningRequestServiceImpTest {
     @Mock
     private ProvisioningRequestRepository provisioningRequestRepository;
     @Mock
-    private AuditEventServiceImp auditEventServiceImp;
+    private AuditEventService auditEventServiceImp;
 
     @InjectMocks
     private ProvisioningRequestServiceImp provisioningRequestServiceImp;

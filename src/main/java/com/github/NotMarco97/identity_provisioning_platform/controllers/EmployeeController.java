@@ -6,6 +6,7 @@ import com.github.NotMarco97.identity_provisioning_platform.dto.UpdateEmployeeRe
 import com.github.NotMarco97.identity_provisioning_platform.services.EmployeeService;
 import com.github.NotMarco97.identity_provisioning_platform.services.EmployeeServiceImp;
 import com.github.NotMarco97.identity_provisioning_platform.services.IdempotencyRecordService;
+import com.github.NotMarco97.identity_provisioning_platform.services.OrchestratorService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;
@@ -20,12 +21,15 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final IdempotencyRecordService idempotencyRecordService;
     private final ObjectMapper objectMapper;
+    private final OrchestratorService orchestratorService;
 
 
-    public EmployeeController(EmployeeService employeeService,  IdempotencyRecordService idempotencyRecordService, ObjectMapper objectMapper) {
+    public EmployeeController(EmployeeService employeeService,  IdempotencyRecordService idempotencyRecordService, ObjectMapper objectMapper,
+                              OrchestratorService orchestratorService) {
         this.employeeService = employeeService;
         this.idempotencyRecordService = idempotencyRecordService;
         this.objectMapper = objectMapper;
+        this.orchestratorService = orchestratorService;
     }
 
     @PostMapping()
@@ -37,6 +41,7 @@ public class EmployeeController {
 
         idempotencyRecordService.markInProgress(key);
         EmployeeResponse employeeResponse = employeeService.createEmployee(createEmployeeRequest);
+        orchestratorService.orchestrate(employeeResponse.getEmployeeId());
         idempotencyRecordService.markCompleted(key, objectMapper.writeValueAsString(employeeResponse));
 
         return employeeResponse;

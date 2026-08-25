@@ -1,6 +1,6 @@
 package com.github.NotMarco97.identity_provisioning_platform.services;
 
-import com.github.NotMarco97.identity_provisioning_platform.exceptions.AuthorizedFailureException;
+import com.github.NotMarco97.identity_provisioning_platform.exceptions.AuthorizationFailureException;
 import com.github.NotMarco97.identity_provisioning_platform.exceptions.DuplicateIdentityException;
 import com.github.NotMarco97.identity_provisioning_platform.exceptions.PartialFailureException;
 import com.github.NotMarco97.identity_provisioning_platform.exceptions.ThrottlingException;
@@ -23,7 +23,7 @@ public class GraphProviderService implements GraphProvider {
             throw new PartialFailureException("Group assignment failed");
         }
         if(employeeId.equals("EMP-UNAUTHORIZED")){
-            throw new AuthorizedFailureException("Insufficient permissions");
+            throw new AuthorizationFailureException("Insufficient permissions");
         }
 
 

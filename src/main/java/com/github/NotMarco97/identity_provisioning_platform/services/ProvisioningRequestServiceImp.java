@@ -16,9 +16,9 @@ import java.util.Set;
 @Service
 public class ProvisioningRequestServiceImp implements ProvisioningRequestService {
     private final ProvisioningRequestRepository provisioningRequestRepository;
-    private final AuditEventServiceImp auditEventServiceImp;
+    private final AuditEventService auditEventServiceImp;
 
-    public ProvisioningRequestServiceImp(ProvisioningRequestRepository provisioningRequestRepository, AuditEventServiceImp auditEventServiceImp) {
+    public ProvisioningRequestServiceImp(ProvisioningRequestRepository provisioningRequestRepository, AuditEventService auditEventServiceImp) {
         this.provisioningRequestRepository = provisioningRequestRepository;
         this.auditEventServiceImp = auditEventServiceImp;
     }

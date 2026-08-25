@@ -1,7 +1,7 @@
 package com.github.NotMarco97.identity_provisioning_platform.exceptions;
 
-public class AuthorizedFailureException extends  RuntimeException {
-    public AuthorizedFailureException(String message){
+public class AuthorizationFailureException extends  RuntimeException {
+    public AuthorizationFailureException(String message){
         super(message);
     }
 }
