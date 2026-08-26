@@ -23,8 +23,7 @@ The responsibility of this platform is to automate employee identity provisionin
 ---
 
 ## High-Level Architecture
-<img width="882" height="745" alt="highLevel drawio" src="https://github.com/user-attachments/assets/c02f3b6b-699a-451b-b4ed-f3bd31e9c492" />
-
+![High-level architecture.png](diagrams/High-level%20architecture.png)
 
 
 ---
@@ -40,10 +39,5 @@ The model illustrates the interaction between the identity platform and external
 ---
 
 ## Provisioning Lifecycle
-
-
-
-
-
-
+![Provisioning Lifecycle.png](diagrams/Provisioning%20Lifecycle.png)
 
