@@ -1,10 +1,13 @@
 package com.github.NotMarco97.identity_provisioning_platform.provisioning;
 
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@Service
 public class ProvisioningPlanResolver {
     private final Map<String, AccessTemplate> templates = new HashMap<>();
 

@@ -6,6 +6,7 @@ import com.github.NotMarco97.identity_provisioning_platform.entities.Provisionin
 import com.github.NotMarco97.identity_provisioning_platform.graph.GraphProvider;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlan;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlanResolver;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,9 +35,13 @@ public class OrchestratorServiceImplementation implements OrchestratorService {
 
         provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.PENDING);
 
-        try{
+        try {
             graphProviderService.createUser(employeeId, provisioningPlan);
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.COMPLETED);
+
+        }catch(OptimisticLockingFailureException e){
+            return;
+
         }catch (RuntimeException e){
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
         }

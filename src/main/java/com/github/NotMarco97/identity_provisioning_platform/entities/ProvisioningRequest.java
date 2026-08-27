@@ -18,6 +18,8 @@ public class ProvisioningRequest {
     private LocalDateTime updatedAt;
     @Enumerated(EnumType.STRING)
     private ProvisioningRequestStatus status;
+    @Version
+    private Long version;
 
     public Long  getId() {
         return id;

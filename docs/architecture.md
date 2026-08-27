@@ -41,3 +41,14 @@ The model illustrates the interaction between the identity platform and external
 ## Provisioning Lifecycle
 ![Provisioning Lifecycle.png](diagrams/Provisioning%20Lifecycle.png)
 
+### Scope
+This model illustrates the lifecycle of the platform's onboarding process. 
+
+### Key Interaction
+- HR/Caller requests an action or a response from the controller
+- PostgreSQL stores persistent entities and responses
+- The business logic lives within each service's responsibility
+- The mocked graph simulates exceptions and communicates to the orchestrator
+- The controller contains employee endpoints and triggers the orchestrator
+- The orchestrator wires the mocked graph and services together to complete the platform's lifecycle
+

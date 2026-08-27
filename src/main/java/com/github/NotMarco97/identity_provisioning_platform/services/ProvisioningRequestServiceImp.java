@@ -5,6 +5,7 @@ import com.github.NotMarco97.identity_provisioning_platform.entities.Provisionin
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequestStatus;
 import com.github.NotMarco97.identity_provisioning_platform.repositories.AuditEventRepository;
 import com.github.NotMarco97.identity_provisioning_platform.repositories.ProvisioningRequestRepository;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -76,7 +77,18 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
             }
 
             provisioningRequest.setStatus(status);
-            provisioningRequestRepository.save(provisioningRequest);
+            try {
+                provisioningRequestRepository.save(provisioningRequest);
+            }catch(OptimisticLockingFailureException e){
+                AuditEvent auditEvent = new AuditEvent();
+                auditEvent.setActor("System");
+                auditEvent.setRequestId(provisioningRequest.getId());
+                auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
+                auditEvent.setStatusChange("Transition_LOST_CONCURRENT_UPDATE");
+                auditEvent.setOutcome("FAILED");
+                auditEventServiceImp.recordEvent(auditEvent);
+                throw e;
+            }
 
         AuditEvent auditEvent = new AuditEvent();
         auditEvent.setActor("System");
