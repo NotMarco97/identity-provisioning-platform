@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### v0.7 - Provisioning Orchestration & Mocked Graph Simulation
 
 ### Added
+* Added optimistic locking to the transitionTo mechanisms
 * Added idempotency key in createEmployee mapping
 * Added idempotency entity
 * Added idempotency business logic
@@ -26,6 +27,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 * Classes use the interface instead of the implementation
+* Fixed a race condition where provisioning requests overwrite state transitions
 
 ---
 

@@ -26,7 +26,5 @@ public class GraphProviderService implements GraphProvider {
             throw new AuthorizationFailureException("Insufficient permissions");
         }
 
-
-
     }
 }

@@ -1,30 +1,28 @@
 # Workflow
 
+---
+
 ### Receive Request
 - The platform receives a request from Postman
 
 ### Validate Requests
-- The platform validates employee information before any provisioning begins
+- The platform checks for an existing idempotency key associated with the new employee
+- The platform creates a new employee and returns a snapshot of the employee response
 
 ### Apply business rules
 - Business rules determine how the employee should be provisioned
 
-#### Examples include:
-- Department
-- Job Title
-- Role
-
 ### Provision Identity
-The platform communicates with Postman.
+- The orchestrator begins wiring each service to begin provisioning
 
 ### Record Provisioning
-Provisioning status and audit information are stored within PostgreSQL.
+- Provisioning status and audit information are stored within PostgreSQL
 
 ### Rejection Result
-The platform returns invalid requests and an audit event.
+- The platform returns invalid requests and an audit event
 
 ### Return Result
-The platform returns the provisioning result to Postman.
+- The platform finishes provisioning and stores the result in PostgreSQL
 
 ### Unit Test
-Provisioning plan is displayed in unit tests.
+- Mocked Graph can be tested in unit testing

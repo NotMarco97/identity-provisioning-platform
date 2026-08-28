@@ -7,6 +7,24 @@ The design principles that guided this project were how, why, and trade-offs. Th
 
 ---
 # Release v0.7
+### Decision
+transitionTo method in ProvisioningRequestService - implemented optimistic locking.
+
+### Why
+To resolve a race condition where the orchestrator and a future addition such as a watchdog, would cause overwrites in the state transition.
+
+### Trade-offs
+
+### Pros
+- No overwrites
+- The orchestrator is aware of being locked out
+- No duplicate failed states when the orchestrator is locked out
+
+### Cons
+- A FAILED state transition may live in the database even if the lifecycle is completed
+- Currently, human intervention is needed to resolve this rare occurence
+
+---
 
 ### Decision 
 An HR/caller generates and owns the idempotency key - IdempotencyRecord persists the provided key.
@@ -24,14 +42,18 @@ To prevent a duplicate employee and race condition from happening.
 ### Cons
 - The caller must provide a key
 
+---
+
 ### Decision
 The business logic for the persistent idempotency key, lives in its own service. 
 
 ### Why
 Promotes decoupling and allows changes from other services to not impact the key's business logic. 
 
+---
+
 ### Decision
-HR/caller receives a snapshot of an employee response associated with the idemptoency record.
+HR/caller receives a snapshot of an employee response associated with the idempotency record.
 
 ### Why
 The caller only cares about the employee's creation.
@@ -40,35 +62,43 @@ The caller only cares about the employee's creation.
 
 ### Pros
 - The caller receives a non changed response
-- Any changes during the caller not receiving the response yet, gets discarded from the response
+- Any changes when the caller has not received a respone, get discarded from the response
 - Decoupled idempotency record to preserve a response
 
 ### Cons
 - Complexity
 
+---
+
 ### Decision
-The orchestrator does not need perstistance/entity.
+The orchestrator does not need persistence/entity.
 
 ### Why
 The orchestrator is a pure coordinator to wire the platform's lifecycle.
 
+---
+
 ### Decision
-Fake graph provider provides custom exceptions - does not mock the real mechanics of groups/license.
+Fake graph provider provides custom exceptions - does not mock the real mechanics for groups & licenses.
 
 ### Why
 The platform does have ownership of assigning the access plates to an employee - Microsoft Graph owns this mechanic.
 
+---
+
 ### Decision 
-Orchestrator must be called before markCompleted state in createEmployee mapping
+Orchestrator must be called before markCompleted state in createEmployee mapping.
 
 ### Why
 Prevents a bug where the orchestrator might never be called if the idempotency record state is marked as completed. 
 
+---
+
 ### Decision
-Unit testing was only based of the orchestrators outcomes.
+Unit testing was only based of the orchestrator's outcomes.
 
 ### Why
-Other mechanics such as transitioning through other states, has been unit tested previously - orchestrator trusts those services. 
+Other mechanics such as transitioning through other states have been unit tested previously - orchestrator trusts those services. 
 
 
 ---
@@ -76,10 +106,12 @@ Other mechanics such as transitioning through other states, has been unit tested
 # Release v0.6
 
 ### Decision
-Did not implement atomicity in provisioning request business logic
+Did not implement atomicity in the provisioning request business logic.
 
 ### Why
-Audit events are wired in provisioning request business logic and it must live within failures.
+Audit events are wired in provisioning request business logic and they must live within failures.
+
+---
 
 ### Decision
 Audit event service is decoupled from provisioning request.
@@ -104,17 +136,21 @@ Provisioning request is an entity.
 ### Why
 The entity is persistent because it must keep track of its legal states.
 
+---
+
 ### Decision
 Idempotency was added to provisioning request.
 
 ### Why
 The provisioning request must not take another active request of the same employee in progress. 
 
+---
+
 ### Decision
 A synchronous approach was taken for requests.
 
 ### Why 
-It ensures that each state of the provisioning request is completed and ensured.
+It ensures that each state of the provisioning request is completed.
 
 ---
 
@@ -202,10 +238,10 @@ Accepted as out of scope.
 ---
 
 ### Decision 
-Separate HR from provisioning
+Separate HR from provisioning.
 
 ### Why
-Employee information already exist in an HR system.
+Employee information already exists in an HR system.
 
 ---
 

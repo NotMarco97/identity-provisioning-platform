@@ -20,6 +20,7 @@ This document describes how the platform authenticates, authorizes, stores sensi
 
 ### Error Handling
 - The platform does not leak internal details in error responses
+- Idempotency key prevents a duplicate employees
 
 ### Security Boundaries
 
