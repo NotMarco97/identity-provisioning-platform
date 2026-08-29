@@ -1,5 +1,6 @@
 package com.github.NotMarco97.identity_provisioning_platform.controllers;
 
+import com.github.NotMarco97.identity_provisioning_platform.Oauth.GraphTokenService;
 import com.github.NotMarco97.identity_provisioning_platform.dto.CreateEmployeeRequest;
 import com.github.NotMarco97.identity_provisioning_platform.dto.EmployeeResponse;
 import com.github.NotMarco97.identity_provisioning_platform.dto.UpdateEmployeeRequest;
@@ -9,6 +10,7 @@ import com.github.NotMarco97.identity_provisioning_platform.services.Idempotency
 import com.github.NotMarco97.identity_provisioning_platform.services.OrchestratorService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -22,14 +24,16 @@ public class EmployeeController {
     private final IdempotencyRecordService idempotencyRecordService;
     private final ObjectMapper objectMapper;
     private final OrchestratorService orchestratorService;
+    private final GraphTokenService graphTokenService;
 
 
     public EmployeeController(EmployeeService employeeService,  IdempotencyRecordService idempotencyRecordService, ObjectMapper objectMapper,
-                              OrchestratorService orchestratorService) {
+                              OrchestratorService orchestratorService, GraphTokenService graphTokenService) {
         this.employeeService = employeeService;
         this.idempotencyRecordService = idempotencyRecordService;
         this.objectMapper = objectMapper;
         this.orchestratorService = orchestratorService;
+        this.graphTokenService = graphTokenService;
     }
 
     @PostMapping()
@@ -66,6 +70,17 @@ public class EmployeeController {
     @PatchMapping("{employeeId}")
     public EmployeeResponse updateEmployee(@PathVariable String employeeId, @RequestBody UpdateEmployeeRequest updateEmployeeRequest){
         return employeeService.updateEmployee(employeeId, updateEmployeeRequest);
+    }
+
+    @GetMapping("/graph")
+    public String graphTest() throws Exception{
+        String token = graphTokenService.getAccessToken();
+        RestClient restClient = RestClient.create();
+        return restClient.get()
+                .uri("https://graph.microsoft.com/v1.0/users")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(String.class);
     }
 
 }
