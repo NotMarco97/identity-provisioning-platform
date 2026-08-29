@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+### v0.8 - Application Registration In Entra ID
+
+### Added
+* Registered the application platform in Entra ID
+* Added a client secret to the application
+* Added the client secret to local development configuration
+
 ### v0.7 - Provisioning Orchestration & Mocked Graph Simulation
 
 ### Added

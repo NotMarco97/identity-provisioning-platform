@@ -6,6 +6,10 @@
 The design principles that guided this project were how, why, and trade-offs. This approach was taken to evaluate design that satisfies its purpose with consideration to trade-offs. 
 
 ---
+
+# Release v0.8
+- none
+
 # Release v0.7
 ### Decision
 transitionTo method in ProvisioningRequestService - implemented optimistic locking.

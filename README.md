@@ -61,11 +61,11 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.7
+**Version:** v0.8
 
 Completed in this version:
 
-* A working mocked lifecycle for the identity platform.
+* Registered the application in Entra ID with a client secret
 
 ---
 
