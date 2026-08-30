@@ -7,6 +7,19 @@ The design principles that guided this project were how, why, and trade-offs. Th
 
 ---
 
+# Release v0.9
+### Decision
+Implemented OAuth2.0 using Microsoft Authentication Library for Java.
+
+### Why
+To take advantage of Microsoft's automated token cache.
+
+### Trade-offs
+### Pros
+- Reduce complexity
+
+---
+
 # Release v0.8
 - none
 

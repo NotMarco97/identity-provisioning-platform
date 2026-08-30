@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The responsibility of this platform is to automate employee identity provisioning by validating onboarding requests, applying business rules, provisioning identities, and recording provisioning states.The platform is designed to be scalable, maintainable, and resilient while providing auditing and error handling.
+The responsibility of this platform is to automate employee identity provisioning by validating onboarding requests, applying business rules, provisioning identities, and recording provisioning states. The platform is designed to be scalable, maintainable, and resilient while providing auditing and error handling.
 
 #### The platform is not responsible for:
 

@@ -61,11 +61,12 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.8
+**Version:** v0.9
 
 Completed in this version:
 
-* Registered the application in Entra ID with a client secret
+* A read only endpoint connected to Graph.
+* OAuth2.0 client credentials with a logger.
 
 ---
 

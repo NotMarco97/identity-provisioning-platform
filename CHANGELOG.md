@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 
 ---
+### v0.9 - OAuth Authentication & Read-Only Graph Connectivity
+### Added
+* Added Read-Only employee endpoint
+* Added OAuth2.0 implementation
+* Added logger for acquiring an access token
+
+### Changed
+* none
+
+### Fixed
+* none
+
+---
+
 
 ### v0.8 - Application Registration In Entra ID
 
@@ -10,6 +24,12 @@ All notable changes to this project will be documented in this file.
 * Registered the application platform in Entra ID
 * Added a client secret to the application
 * Added the client secret to local development configuration
+
+### Changed
+* none
+
+### Fixed
+* none
 
 ### v0.7 - Provisioning Orchestration & Mocked Graph Simulation
 

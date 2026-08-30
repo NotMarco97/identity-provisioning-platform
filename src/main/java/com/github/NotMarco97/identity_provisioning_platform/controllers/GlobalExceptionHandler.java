@@ -1,5 +1,6 @@
 package com.github.NotMarco97.identity_provisioning_platform.controllers;
 
+import com.github.NotMarco97.identity_provisioning_platform.Oauth.GraphAuthenticationException;
 import com.github.NotMarco97.identity_provisioning_platform.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -80,6 +81,18 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
             return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(GraphAuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleGraphAuthenticationException(GraphAuthenticationException ex, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                502,
+                "Upstream Authentication Failed",
+                "Unable to authenticate with the identity provider.",
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_GATEWAY);
     }
 
 }

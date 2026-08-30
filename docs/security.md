@@ -10,7 +10,10 @@ This document describes how the platform authenticates, authorizes, stores sensi
 
 ### Authentication
 
-- Not implemented yet
+- Registered application with a client secret
+
+### Authorization 
+- Application is authorized to read-only
 
 ### Secret Management
 - Local development configuration.

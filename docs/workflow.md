@@ -26,3 +26,6 @@
 
 ### Unit Test
 - Mocked Graph can be tested in unit testing
+
+### Microsoft Graph
+- Call the read-only endpoint to test with the real Graph.
