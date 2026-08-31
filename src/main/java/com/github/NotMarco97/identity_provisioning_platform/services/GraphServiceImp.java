@@ -28,6 +28,7 @@ public class GraphServiceImp{
                 .header("Authorization", "Bearer " + graphTokenService.getAccessToken())
                 .retrieve()
                 .body(GraphUserListResponse.class);
+
         return response != null && !response.getValue().isEmpty();
     }
 

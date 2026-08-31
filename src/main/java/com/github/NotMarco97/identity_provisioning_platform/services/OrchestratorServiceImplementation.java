@@ -45,10 +45,12 @@ public class OrchestratorServiceImplementation implements OrchestratorService {
             employeeServiceImp.addEmloyeeEntraObjectId(employeeId, entraObjectId);
 
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.COMPLETED, entraObjectId);
-        }catch(OptimisticLockingFailureException e){
+        } catch (OptimisticLockingFailureException e) {
             return;
-
-        }catch (RuntimeException e){
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            System.out.println("Graph error response: " + e.getResponseBodyAsString());
+            provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
+        } catch (RuntimeException e) {
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
         }
 

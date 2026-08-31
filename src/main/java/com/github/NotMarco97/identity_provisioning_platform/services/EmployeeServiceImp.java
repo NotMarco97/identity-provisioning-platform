@@ -87,6 +87,7 @@ public class EmployeeServiceImp implements EmployeeService {
         employeeResponse.setCreatedAt(employee.getCreatedAt().toString());
         employeeResponse.setUpdatedAt(employee.getUpdatedAt().toString());
         employeeResponse.setStatus(employee.getStatus().name());
+        employeeResponse.setUserPrincipalName(employee.getUserPrincipalName());
 
         return employeeResponse;
     }
