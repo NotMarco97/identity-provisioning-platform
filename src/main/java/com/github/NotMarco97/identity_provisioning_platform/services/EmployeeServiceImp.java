@@ -5,6 +5,7 @@ import com.github.NotMarco97.identity_provisioning_platform.dto.EmployeeResponse
 import com.github.NotMarco97.identity_provisioning_platform.dto.UpdateEmployeeRequest;
 import com.github.NotMarco97.identity_provisioning_platform.entities.Employee;
 import com.github.NotMarco97.identity_provisioning_platform.entities.EmployeeStatus;
+import com.github.NotMarco97.identity_provisioning_platform.repositories.AuditEventRepository;
 import com.github.NotMarco97.identity_provisioning_platform.repositories.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,10 @@ import java.util.List;
 public class EmployeeServiceImp implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    public EmployeeServiceImp(EmployeeRepository employeeRepository) {
+    private final GraphServiceImp graphServiceImp;
+    public EmployeeServiceImp(EmployeeRepository employeeRepository, GraphServiceImp graphServiceImp) {
         this.employeeRepository = employeeRepository;
+        this.graphServiceImp = graphServiceImp;
     }
 
     @Transactional
@@ -35,13 +38,22 @@ public class EmployeeServiceImp implements EmployeeService {
 
         String emailNameSection = newEmployee.getFirstName().toLowerCase().charAt(0) + newEmployee.getLastName().toLowerCase();
         String email = emailNameSection + "@company.com";
+        String upd = emailNameSection + "@mamarcoadamegmail.onmicrosoft.com";
 
         int counter = 0;
         while(employeeRepository.existsByEmail(email)){
             counter++;
             email = emailNameSection + counter +  "@company.com";
         }
+
+        int updCounter = 0;
+        while(graphServiceImp.userPrincipalNameExists(upd)){
+            updCounter++;
+            upd = emailNameSection + counter +  "@mamarcoadamegmail.onmicrosoft.com";
+        }
+
         newEmployee.setEmail(email);
+        newEmployee.setUserPrincipalName(upd);
 
         employeeRepository.save(newEmployee);
         newEmployee.setEmployeeId("EMP-" + String.format("%04d", newEmployee.getId()));
@@ -57,7 +69,7 @@ public class EmployeeServiceImp implements EmployeeService {
         newEmployeeResponse.setCreatedAt(newEmployee.getCreatedAt().toString());
         newEmployeeResponse.setUpdatedAt(newEmployee.getUpdatedAt().toString());
         newEmployeeResponse.setStatus(newEmployee.getStatus().name());
-
+        newEmployeeResponse.setUserPrincipalName(newEmployee.getUserPrincipalName());
         return newEmployeeResponse;
     }
 

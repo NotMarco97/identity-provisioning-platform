@@ -26,6 +26,15 @@ public class Employee {
     private LocalDateTime updatedAt;
     @Column(unique = true)
     private String employeeId;
+    @Column(unique = true)
+    private String userPrincipalName;
+
+    public String  getUserPrincipalName() {
+        return userPrincipalName;
+    }
+    public void setUserPrincipalName(String userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
+    }
 
     public Long getId() {
         return id;

@@ -19,7 +19,7 @@ public class GraphTokenService {
         this.app = app;
     }
 
-    public String getAccessToken() throws Exception {
+    public String getAccessToken(){
         ClientCredentialParameters params = ClientCredentialParameters.builder(
                 Collections.singleton("https://graph.microsoft.com/.default"))
                 .build();

@@ -11,6 +11,14 @@ public class EmployeeResponse {
     private String createdAt;
     private String updatedAt;
     private String employeeId;
+    private String userPrincipalName;
+
+    public String  getUserPrincipalName() {
+        return userPrincipalName;
+    }
+    public void setUserPrincipalName(String userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
+    }
 
     public String getFirstName(){
         return firstName;

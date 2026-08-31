@@ -73,7 +73,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/graph")
-    public String graphTest() throws Exception{
+    public String graphTest(){
         String token = graphTokenService.getAccessToken();
         RestClient restClient = RestClient.create();
         return restClient.get()
