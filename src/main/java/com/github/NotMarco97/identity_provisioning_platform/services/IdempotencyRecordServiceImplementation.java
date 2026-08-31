@@ -32,6 +32,10 @@ public class IdempotencyRecordServiceImplementation implements IdempotencyRecord
     @Override
     public void markInProgress(String key) {
         IdempotencyRecord idempotencyRecord = idempotencyRecordRepository.findByKey(key);
+        if (idempotencyRecord == null) {
+            idempotencyRecord = new IdempotencyRecord();
+            idempotencyRecord.setKey(key);
+        }
         idempotencyRecord.setStatus(IdempotencyRecordStatus.IN_PROGRESS);
         idempotencyRecordRepository.save(idempotencyRecord);
     }

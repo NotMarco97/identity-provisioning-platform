@@ -28,10 +28,19 @@ public class Employee {
     private String employeeId;
     @Column(unique = true)
     private String userPrincipalName;
+    private String entraObjectId;
+
+    public String getEntraObjectId() {
+        return entraObjectId;
+    }
+    public void setEntraObjectId(String entraObjectId) {
+        this.entraObjectId = entraObjectId;
+    }
 
     public String  getUserPrincipalName() {
         return userPrincipalName;
     }
+
     public void setUserPrincipalName(String userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
     }

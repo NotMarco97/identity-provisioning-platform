@@ -84,11 +84,53 @@ public class ProvisioningRequestServiceImp implements ProvisioningRequestService
                 auditEvent.setActor("System");
                 auditEvent.setRequestId(provisioningRequest.getId());
                 auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
-                auditEvent.setStatusChange("Transition_LOST_CONCURRENT_UPDATE");
+                auditEvent.setStatusChange("TRANSITION_LOST_CONCURRENT_UPDATE");
                 auditEvent.setOutcome("FAILED");
                 auditEventServiceImp.recordEvent(auditEvent);
                 throw e;
             }
+
+        AuditEvent auditEvent = new AuditEvent();
+        auditEvent.setActor("System");
+        auditEvent.setOutcome("SUCCESS");
+        auditEvent.setRequestId(provisioningRequest.getId());
+        auditEvent.setStatusChange("REQUEST_CHANGED_TO_" + provisioningRequest.getStatus().toString());
+        auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
+        auditEventServiceImp.recordEvent(auditEvent);
+    }
+
+    @Override
+    public void transitionTo(Long requestId, ProvisioningRequestStatus status, String entraObjectId) {
+        ProvisioningRequest provisioningRequest = provisioningRequestRepository.findById(requestId).orElseThrow();
+
+        if(!legalTransaction.getOrDefault(provisioningRequest.getStatus(), Set.of()).contains(status)){
+            AuditEvent auditEvent = new AuditEvent();
+            auditEvent.setActor("System");
+            auditEvent.setRequestId(provisioningRequest.getId());
+            auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
+            auditEvent.setStatusChange("STATUS_CHANGED_TO_FAILED");
+            auditEvent.setOutcome("FAILED");
+            auditEventServiceImp.recordEvent(auditEvent);
+            throw new IllegalStateException();
+        }
+
+        provisioningRequest.setStatus(status);
+        if (entraObjectId != null) {
+            provisioningRequest.setEntraObjectId(entraObjectId);
+        }
+
+        try {
+            provisioningRequestRepository.save(provisioningRequest);
+        }catch(OptimisticLockingFailureException e){
+            AuditEvent auditEvent = new AuditEvent();
+            auditEvent.setActor("System");
+            auditEvent.setRequestId(provisioningRequest.getId());
+            auditEvent.setTargetEmployee(provisioningRequest.getEmployeeId());
+            auditEvent.setStatusChange("TRANSITION_LOST_CONCURRENT_UPDATE");
+            auditEvent.setOutcome("FAILED");
+            auditEventServiceImp.recordEvent(auditEvent);
+            throw e;
+        }
 
         AuditEvent auditEvent = new AuditEvent();
         auditEvent.setActor("System");

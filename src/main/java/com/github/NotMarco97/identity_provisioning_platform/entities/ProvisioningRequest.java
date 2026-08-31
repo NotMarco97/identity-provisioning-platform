@@ -20,6 +20,14 @@ public class ProvisioningRequest {
     private ProvisioningRequestStatus status;
     @Version
     private Long version;
+    private String entraObjectId;
+
+    public String getEntraObjectId() {
+        return entraObjectId;
+    }
+    public void setEntraObjectId(String entraObjectId) {
+        this.entraObjectId = entraObjectId;
+    }
 
     public Long  getId() {
         return id;

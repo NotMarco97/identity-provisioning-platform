@@ -12,6 +12,7 @@ public class IdempotencyRecord {
     private Long id;
     @Column(unique = true)
     private String key;
+    @Column(columnDefinition = "TEXT")
     private String responseBody;
     @CreationTimestamp
     private LocalDateTime createdAt;

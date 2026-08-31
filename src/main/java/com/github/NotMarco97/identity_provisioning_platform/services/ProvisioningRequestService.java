@@ -6,4 +6,5 @@ import com.github.NotMarco97.identity_provisioning_platform.entities.Provisionin
 public interface ProvisioningRequestService {
     ProvisioningRequest createProvisioningRequest(String employeeId);
     void transitionTo(Long requestId, ProvisioningRequestStatus status);
+    void transitionTo(Long requestId, ProvisioningRequestStatus status, String entraObjectId);
 }

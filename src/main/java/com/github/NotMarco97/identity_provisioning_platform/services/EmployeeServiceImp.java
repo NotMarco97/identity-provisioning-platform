@@ -17,10 +17,8 @@ import java.util.List;
 public class EmployeeServiceImp implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final GraphServiceImp graphServiceImp;
-    public EmployeeServiceImp(EmployeeRepository employeeRepository, GraphServiceImp graphServiceImp) {
+    public EmployeeServiceImp(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.graphServiceImp = graphServiceImp;
     }
 
     @Transactional
@@ -38,7 +36,6 @@ public class EmployeeServiceImp implements EmployeeService {
 
         String emailNameSection = newEmployee.getFirstName().toLowerCase().charAt(0) + newEmployee.getLastName().toLowerCase();
         String email = emailNameSection + "@company.com";
-        String upd = emailNameSection + "@mamarcoadamegmail.onmicrosoft.com";
 
         int counter = 0;
         while(employeeRepository.existsByEmail(email)){
@@ -46,10 +43,12 @@ public class EmployeeServiceImp implements EmployeeService {
             email = emailNameSection + counter +  "@company.com";
         }
 
-        int updCounter = 0;
-        while(graphServiceImp.userPrincipalNameExists(upd)){
-            updCounter++;
-            upd = emailNameSection + counter +  "@mamarcoadamegmail.onmicrosoft.com";
+        String upd = emailNameSection + "@mamarcoadamegmail.onmicrosoft.com";
+
+        int counter2 = 0;
+        while(employeeRepository.existsByUserPrincipalName(upd)){
+            counter2++;
+            upd = emailNameSection + counter2 + "@mamarcoadamegmail.onmicrosoft.com";
         }
 
         newEmployee.setEmail(email);
@@ -154,5 +153,12 @@ public class EmployeeServiceImp implements EmployeeService {
 
        }
         return employeeResponseList;
+    }
+
+    @Override
+    public void addEmloyeeEntraObjectId(String employeeId, String entraObjectId) {
+        Employee employee = employeeRepository.findByEmployeeId(employeeId).orElseThrow();
+        employee.setEntraObjectId(entraObjectId);
+        employeeRepository.save(employee);
     }
 }
