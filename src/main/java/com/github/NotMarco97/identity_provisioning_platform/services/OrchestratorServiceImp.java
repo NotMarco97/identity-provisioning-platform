@@ -1,31 +1,27 @@
 package com.github.NotMarco97.identity_provisioning_platform.services;
 
 import com.github.NotMarco97.identity_provisioning_platform.dto.EmployeeResponse;
-import com.github.NotMarco97.identity_provisioning_platform.entities.Employee;
 import com.github.NotMarco97.identity_provisioning_platform.entities.GraphUser;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequest;
 import com.github.NotMarco97.identity_provisioning_platform.entities.ProvisioningRequestStatus;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlan;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlanResolver;
-import com.github.NotMarco97.identity_provisioning_platform.repositories.EmployeeRepository;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrchestratorServiceImplementation implements OrchestratorService {
+public class OrchestratorServiceImp implements OrchestratorService {
     private final EmployeeService employeeServiceImp;
     private final ProvisioningPlanResolver provisioningPlanResolver;
     private final ProvisioningRequestService provisioningRequestServiceImp;
     private final GraphServiceImp graphServiceImp;
-    private final EmployeeRepository employeeRepository;
 
-    public OrchestratorServiceImplementation(EmployeeService employeeServiceImp, ProvisioningRequestService provisioningRequestServiceImp,
-                                             ProvisioningPlanResolver provisioningPlanResolver, GraphServiceImp graphServiceImp, EmployeeRepository employeeRepositoryImp) {
+    public OrchestratorServiceImp(EmployeeService employeeServiceImp, ProvisioningRequestService provisioningRequestServiceImp,
+                                  ProvisioningPlanResolver provisioningPlanResolver, GraphServiceImp graphServiceImp) {
         this.employeeServiceImp = employeeServiceImp;
         this.provisioningPlanResolver = provisioningPlanResolver;
         this.provisioningRequestServiceImp = provisioningRequestServiceImp;
         this.graphServiceImp = graphServiceImp;
-        this.employeeRepository = employeeRepositoryImp;
     }
 
     @Override
@@ -47,9 +43,7 @@ public class OrchestratorServiceImplementation implements OrchestratorService {
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.COMPLETED, entraObjectId);
         } catch (OptimisticLockingFailureException e) {
             return;
-        } catch (org.springframework.web.client.HttpClientErrorException e) {
-            System.out.println("Graph error response: " + e.getResponseBodyAsString());
-            provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
+
         } catch (RuntimeException e) {
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
         }

@@ -1,4 +1,4 @@
-package com.github.NotMarco97.identity_provisioning_platform.dto;
+package com.github.NotMarco97.identity_provisioning_platform.graph;
 
 public class PasswordProfile {
     private boolean forceChangePasswordNextSignIn;

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class IdempotencyRecordServiceImplementation implements IdempotencyRecordService {
+public class IdempotencyRecordServiceImp implements IdempotencyRecordService {
     IdempotencyRecordRepository idempotencyRecordRepository;
-    public IdempotencyRecordServiceImplementation(IdempotencyRecordRepository idempotencyRecordRepository) {
+    public IdempotencyRecordServiceImp(IdempotencyRecordRepository idempotencyRecordRepository) {
         this.idempotencyRecordRepository = idempotencyRecordRepository;
     }
 

@@ -148,5 +148,4 @@ class ProvisioningRequestServiceImpTest {
 
         verify(auditEventServiceImp).recordEvent(any(AuditEvent.class));
     }
-
 }

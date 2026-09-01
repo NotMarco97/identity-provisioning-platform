@@ -1,26 +1,26 @@
 package com.github.NotMarco97.identity_provisioning_platform.services;
 
 import com.github.NotMarco97.identity_provisioning_platform.Oauth.GraphTokenService;
-import com.github.NotMarco97.identity_provisioning_platform.dto.GraphCreateUserRequest;
-import com.github.NotMarco97.identity_provisioning_platform.dto.GraphUserListResponse;
+import com.github.NotMarco97.identity_provisioning_platform.graph.GraphCreateUserRequest;
+import com.github.NotMarco97.identity_provisioning_platform.graph.GraphUserListResponse;
 import com.github.NotMarco97.identity_provisioning_platform.entities.GraphUser;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 
 @Service
-public class GraphServiceImp{
+public class GraphServiceImp implements GraphService {
     private final GraphTokenService graphTokenService;
-    private final GraphUserRequestService graphUserRequestService;
+    private final GraphUserRequestServiceImp graphUserRequestServiceImp;
     private final RestClient restClient;
 
-    public GraphServiceImp(GraphTokenService graphTokenService, GraphUserRequestService graphUserRequestService, RestClient restClient){
+    public GraphServiceImp(GraphTokenService graphTokenService, GraphUserRequestServiceImp graphUserRequestServiceImp, RestClient restClient){
         this.graphTokenService = graphTokenService;
-        this.graphUserRequestService = graphUserRequestService;
+        this.graphUserRequestServiceImp = graphUserRequestServiceImp;
         this.restClient = restClient;
     }
 
+    @Override
     public boolean userPrincipalNameExists(String userPrincipalName) {
         String filter = "userPrincipalName eq '" + userPrincipalName + "'";
         GraphUserListResponse response = restClient.get()
@@ -32,8 +32,9 @@ public class GraphServiceImp{
         return response != null && !response.getValue().isEmpty();
     }
 
+    @Override
     public GraphUser createUser(String employeeId) {
-        GraphCreateUserRequest request = graphUserRequestService.buildRequest(employeeId);
+        GraphCreateUserRequest request = graphUserRequestServiceImp.buildRequest(employeeId);
         return restClient.post()
                 .uri("https://graph.microsoft.com/v1.0/users")
                 .header("Authorization", "Bearer " + graphTokenService.getAccessToken())

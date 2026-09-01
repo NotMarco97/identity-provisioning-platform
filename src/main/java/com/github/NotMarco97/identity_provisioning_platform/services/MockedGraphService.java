@@ -4,12 +4,12 @@ import com.github.NotMarco97.identity_provisioning_platform.exceptions.Authoriza
 import com.github.NotMarco97.identity_provisioning_platform.exceptions.DuplicateIdentityException;
 import com.github.NotMarco97.identity_provisioning_platform.exceptions.PartialFailureException;
 import com.github.NotMarco97.identity_provisioning_platform.exceptions.ThrottlingException;
-import com.github.NotMarco97.identity_provisioning_platform.graph.GraphProvider;
+import com.github.NotMarco97.identity_provisioning_platform.graph.MockedGraph;
 import com.github.NotMarco97.identity_provisioning_platform.provisioning.ProvisioningPlan;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GraphProviderService implements GraphProvider {
+public class MockedGraphService implements MockedGraph {
     @Override
     public void createUser(String employeeId, ProvisioningPlan provisioningPlan) {
 

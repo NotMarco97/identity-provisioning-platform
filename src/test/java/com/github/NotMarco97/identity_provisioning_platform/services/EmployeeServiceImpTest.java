@@ -79,6 +79,30 @@ class EmployeeServiceImpTest {
     }
 
     @Test
+    void createEmployeeShouldAppendSuffix_WhenUPN_AlreadyExists() {
+        CreateEmployeeRequest request = new CreateEmployeeRequest();
+        request.setFirstName("John");
+        request.setLastName("Doe");
+        request.setDepartment("IT");
+        request.setJobTitle("Help Desk");
+        request.setSalary(40000);
+
+        when(employeeRepository.existsByUserPrincipalName("jdoe@mamarcoadamegmail.onmicrosoft.com")).thenReturn(true);
+        when(employeeRepository.existsByUserPrincipalName("jdoe1@mamarcoadamegmail.onmicrosoft.com")).thenReturn(false);
+
+        doAnswer(invocation-> {Employee employeeARG = invocation.getArgument(0);
+            employeeARG.setId(1L);
+            employeeARG.setUpdatedAt(LocalDateTime.now());
+            employeeARG.setCreatedAt(LocalDateTime.now());
+            return employeeARG;}).when(employeeRepository).save(any(Employee.class));
+
+        EmployeeResponse response = employeeServiceImp.createEmployee(request);
+
+        assertEquals("jdoe1@mamarcoadamegmail.onmicrosoft.com", response.getUserPrincipalName());
+
+    }
+
+    @Test
     void findEmployeeByIdShouldReturnCorrectEmployee() {
         String employeeId = "EMP-0042";
         Employee fakeEmployee = new Employee();
@@ -90,6 +114,7 @@ class EmployeeServiceImpTest {
         fakeEmployee.setSalary(40000.0);
         fakeEmployee.setStatus(EmployeeStatus.ACTIVE);
         fakeEmployee.setEmail("jdoe@company.com");
+        fakeEmployee.setUserPrincipalName("jdoe@mamarcoadamegmail.onmicrosoft.com");
         fakeEmployee.setCreatedAt(LocalDateTime.now());
         fakeEmployee.setUpdatedAt(LocalDateTime.now());
 
