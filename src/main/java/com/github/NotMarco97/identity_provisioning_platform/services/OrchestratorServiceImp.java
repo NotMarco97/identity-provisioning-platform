@@ -14,14 +14,14 @@ public class OrchestratorServiceImp implements OrchestratorService {
     private final EmployeeService employeeServiceImp;
     private final ProvisioningPlanResolver provisioningPlanResolver;
     private final ProvisioningRequestService provisioningRequestServiceImp;
-    private final GraphServiceImp graphServiceImp;
+    private final GraphService graphService;
 
     public OrchestratorServiceImp(EmployeeService employeeServiceImp, ProvisioningRequestService provisioningRequestServiceImp,
-                                  ProvisioningPlanResolver provisioningPlanResolver, GraphServiceImp graphServiceImp) {
+                                  ProvisioningPlanResolver provisioningPlanResolver, GraphService graphService) {
         this.employeeServiceImp = employeeServiceImp;
         this.provisioningPlanResolver = provisioningPlanResolver;
         this.provisioningRequestServiceImp = provisioningRequestServiceImp;
-        this.graphServiceImp = graphServiceImp;
+        this.graphService = graphService;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class OrchestratorServiceImp implements OrchestratorService {
         provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.PENDING);
 
         try {
-            GraphUser createdUser = graphServiceImp.createUser(employeeId);
+            GraphUser createdUser = graphService.createUser(employeeId);
             String entraObjectId = createdUser.getId();
             employeeServiceImp.addEmloyeeEntraObjectId(employeeId, entraObjectId);
 
@@ -45,6 +45,7 @@ public class OrchestratorServiceImp implements OrchestratorService {
             return;
 
         } catch (RuntimeException e) {
+
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.FAILED);
         }
 

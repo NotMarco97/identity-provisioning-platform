@@ -11,12 +11,12 @@ import org.springframework.web.client.RestClient;
 @Service
 public class GraphServiceImp implements GraphService {
     private final GraphTokenService graphTokenService;
-    private final GraphUserRequestServiceImp graphUserRequestServiceImp;
+    private final GraphUserRequestService graphUserRequestService;
     private final RestClient restClient;
 
-    public GraphServiceImp(GraphTokenService graphTokenService, GraphUserRequestServiceImp graphUserRequestServiceImp, RestClient restClient){
+    public GraphServiceImp(GraphTokenService graphTokenService, GraphUserRequestService graphUserRequestService, RestClient restClient){
         this.graphTokenService = graphTokenService;
-        this.graphUserRequestServiceImp = graphUserRequestServiceImp;
+        this.graphUserRequestService= graphUserRequestService;
         this.restClient = restClient;
     }
 
@@ -34,7 +34,7 @@ public class GraphServiceImp implements GraphService {
 
     @Override
     public GraphUser createUser(String employeeId) {
-        GraphCreateUserRequest request = graphUserRequestServiceImp.buildRequest(employeeId);
+        GraphCreateUserRequest request = graphUserRequestService.buildRequest(employeeId);
         return restClient.post()
                 .uri("https://graph.microsoft.com/v1.0/users")
                 .header("Authorization", "Bearer " + graphTokenService.getAccessToken())
