@@ -157,7 +157,7 @@ public class EmployeeServiceImp implements EmployeeService {
     }
 
     @Override
-    public void addEmloyeeEntraObjectId(String employeeId, String entraObjectId) {
+    public void addEmployeeEntraObjectId(String employeeId, String entraObjectId) {
         Employee employee = employeeRepository.findByEmployeeId(employeeId).orElseThrow();
         employee.setEntraObjectId(entraObjectId);
         employeeRepository.save(employee);

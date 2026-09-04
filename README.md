@@ -49,11 +49,11 @@ Current technologies:
 * PostgreSQL
 * Git
 * GitHub
+* Microsoft Graph API
+* Microsoft Entra ID
 
 Planned technologies:
 
-* Microsoft Graph API
-* Microsoft Entra ID
 * Azure App Service
 * Azure Key Vault
 
@@ -61,12 +61,11 @@ Planned technologies:
 
 ## Current Version
 
-**Version:** v0.9
+**Version:** v1.0
 
 Completed in this version:
 
-* A read only endpoint connected to Graph.
-* OAuth2.0 client credentials with a logger.
+* The platform creates an Entra user through Graph.
 
 ---
 
@@ -76,7 +75,6 @@ This project is developed using incremental versioned releases.
 
 Upcoming milestones include:
 * Provisioning workflow
-* Microsoft Graph integration
 * Azure deployment
 * Production readiness review
 
@@ -115,6 +113,7 @@ Detailed documentation for this project can be found inside the '/docs' director
 * Maven
 * PostgreSQL
 * Git
+* Postman 
 
 ---
 
@@ -122,10 +121,12 @@ Detailed documentation for this project can be found inside the '/docs' director
 
 1. Clone the repository.
 2. Configure the PostgreSQL database.
-3. Update the application configuration.
-4. Run the Spring Boot application.
-5. Verify the application starts successfully.
-6. Use Postman to call an endpoint.
+3. Register the application in a tenant.
+4. Update the application configuration.
+5. Run the Spring Boot application.
+6. Verify the application starts successfully.
+7. Add Idempotency key in Postman header.
+8. Use Postman to create an Entra user using /employees.
 
 ---
 

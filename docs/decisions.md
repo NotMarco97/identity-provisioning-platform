@@ -7,6 +7,55 @@ The design principles that guided this project were how, why, and trade-offs. Th
 
 ---
 
+# Release v1.0
+
+---
+### Decision
+EmployeeService does not communicate with Graph - All graph payload constructions lives in GraphUserRequestService.
+
+### Why
+Enforces decoupling by making seperating business logic between each system interaction. Seperates resposability to prevent the Caller/HR from waiting the full provisioning cycle for a response. 
+
+### Trade-offs
+### Pros
+* Decoupling allows easier updates
+* HR/Caller does not wait on the completed lifecycle for a response
+* Even if Graph fails during provisioning, HR/Caller receives an employee response
+
+### Cons
+* Adds complexity because EmployeeService does not communicate with Graph directly
+
+
+---
+
+### Decision
+Employee entity is the source of truth for entra object id.
+
+### Why
+The Employee entity has ownership of the entra object id because it is the reference of the live object in Entra ID.
+
+### Trade-offs
+### Pros
+* Clear boundary between Employee and ProvisioningRequest use of entra object id.
+* Decouples provisioning history from the employee to preserve it if an offboarding occurs
+
+---
+### Decision
+Entra Object Id is stored in Employee and ProvisioningRequest Entity.
+
+### Why
+Both are required because the entra object id must correlate to a ProvisioningRequest state while the Employee entity needs the identifier that correlates to the entra object id (user).
+
+### Trade-offs
+### Pros
+* The entra user has an immutable state of its provisioning lifecycle using their entra object id as association
+* The provisioned entra user lives in the Employee entity via entra object id
+
+### Cons
+* Added complexity
+
+---
+
 # Release v0.9
 ### Decision
 Implemented OAuth2.0 using Microsoft Authentication Library for Java.

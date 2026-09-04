@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 
 ---
+
+### v1.0 - Entra User Provisioning
+### Added
+* Added Microsoft Graph for user creation via POST /users.
+* Added GraphService & GraphServiceImp
+* Added CreateUser for Graph
+* Added userPrincipleNameExists in GraphService
+* Added GraphCreateUserRequest
+* Added PasswordProfile & GraphUser for CreateUser
+* Added GraphUserListResponse
+* Added UPN generation in EmployeeService
+* mailNickname derived from email's local part
+* Added random password generator
+* Entra object id persists on Employee and ProvisioningRequest
+* Added unit testing for Orchestrator  
+* Added unit testing for GraphUserRequestService
+* Added unit testing for GraphService
+
+### Changed
+* Removed mocked graph from platform
+* Removed mocked graph from Orchestrator unit testing
+
+### Fixed
+* none
+
 ### v0.9 - OAuth Authentication & Read-Only Graph Connectivity
 ### Added
 * Added Read-Only employee endpoint

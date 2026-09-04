@@ -13,7 +13,7 @@ This document describes how the platform authenticates, authorizes, stores sensi
 - Registered application with a client secret
 
 ### Authorization 
-- Application is authorized to read-only
+- Application is authorized to read and write
 
 ### Secret Management
 - Local development configuration.

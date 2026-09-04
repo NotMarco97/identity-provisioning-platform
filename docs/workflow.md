@@ -24,8 +24,5 @@
 ### Return Result
 - The platform finishes provisioning and stores the result in PostgreSQL
 
-### Unit Test
-- Mocked Graph can be tested in unit testing
-
 ### Microsoft Graph
-- Call the read-only endpoint to test with the real Graph.
+- Call the createEmployee endpoint to provision a user.

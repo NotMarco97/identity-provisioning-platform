@@ -71,7 +71,7 @@ class OrchestratorServiceImpTest {
         verify(provisioningRequestService).transitionTo(1L, ProvisioningRequestStatus.PLANNED);
         verify(provisioningRequestService).transitionTo(1L, ProvisioningRequestStatus.PENDING);
         verify(provisioningRequestService).transitionTo(1L, ProvisioningRequestStatus.COMPLETED, "fake-entra-object-id-123");
-        verify(employeeService).addEmloyeeEntraObjectId("EMP-0001", "fake-entra-object-id-123");
+        verify(employeeService).addEmployeeEntraObjectId("EMP-0001", "fake-entra-object-id-123");
     }
 
     @Test
@@ -103,7 +103,7 @@ class OrchestratorServiceImpTest {
         orchestratorServiceImp.orchestrate("EMP-0001");
 
         verify(provisioningRequestService, never()).transitionTo(1L, ProvisioningRequestStatus.FAILED);
-        verify(employeeService).addEmloyeeEntraObjectId("EMP-0001", "fake-entra-object-id-123");
+        verify(employeeService).addEmployeeEntraObjectId("EMP-0001", "fake-entra-object-id-123");
     }
 
     @Test
@@ -126,7 +126,7 @@ class OrchestratorServiceImpTest {
         orchestratorServiceImp.orchestrate("EMP-0001");
 
         verify(provisioningRequestService).transitionTo(1L, ProvisioningRequestStatus.FAILED);
-        verify(employeeService, never()).addEmloyeeEntraObjectId(any(), any());
+        verify(employeeService, never()).addEmployeeEntraObjectId(any(), any());
         verify(provisioningRequestService, never()).transitionTo(eq(1L), eq(ProvisioningRequestStatus.COMPLETED), any());
     }
 

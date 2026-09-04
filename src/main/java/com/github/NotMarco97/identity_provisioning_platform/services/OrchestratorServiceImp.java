@@ -38,7 +38,7 @@ public class OrchestratorServiceImp implements OrchestratorService {
         try {
             GraphUser createdUser = graphService.createUser(employeeId);
             String entraObjectId = createdUser.getId();
-            employeeServiceImp.addEmloyeeEntraObjectId(employeeId, entraObjectId);
+            employeeServiceImp.addEmployeeEntraObjectId(employeeId, entraObjectId);
 
             provisioningRequestServiceImp.transitionTo(provisioningRequest.getId(), ProvisioningRequestStatus.COMPLETED, entraObjectId);
         } catch (OptimisticLockingFailureException e) {
