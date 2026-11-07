@@ -1,9 +1,8 @@
-
 # Design Philosophy
 
 ---
 
-The design principles that guided this project were how, why, and trade-offs. This approach was taken to evaluate design that satisfies its purpose with consideration to trade-offs. 
+The design principles that guided this project were how, why, and trade-offs. This approach was taken to evaluate design that satisfies its purpose with consideration of trade-offs.
 
 ---
 
@@ -11,10 +10,10 @@ The design principles that guided this project were how, why, and trade-offs. Th
 
 ---
 ### Decision
-EmployeeService does not communicate with Graph - All graph payload constructions lives in GraphUserRequestService.
+EmployeeService does not communicate with Graph. All Graph payload construction lives in GraphUserRequestService.
 
 ### Why
-Enforces decoupling by making seperating business logic between each system interaction. Seperates resposability to prevent the Caller/HR from waiting the full provisioning cycle for a response. 
+Enforces decoupling by separating business logic between each system interaction. Separates responsibility to prevent the Caller/HR from waiting for the full provisioning cycle for a response.
 
 ### Trade-offs
 ### Pros
@@ -29,27 +28,27 @@ Enforces decoupling by making seperating business logic between each system inte
 ---
 
 ### Decision
-Employee entity is the source of truth for entra object id.
+The Employee entity is the source of truth for the Entra object ID.
 
 ### Why
-The Employee entity has ownership of the entra object id because it is the reference of the live object in Entra ID.
+The Employee entity has ownership of the Entra object ID because it is the reference of the live object in Entra ID.
 
 ### Trade-offs
 ### Pros
-* Clear boundary between Employee and ProvisioningRequest use of entra object id.
+* Clear boundary between Employee and ProvisioningRequest use of the Entra object ID.
 * Decouples provisioning history from the employee to preserve it if an offboarding occurs
 
 ---
 ### Decision
-Entra Object Id is stored in Employee and ProvisioningRequest Entity.
+The Entra object ID is stored in the Employee and ProvisioningRequest entities.
 
 ### Why
-Both are required because the entra object id must correlate to a ProvisioningRequest state while the Employee entity needs the identifier that correlates to the entra object id (user).
+Both are required because the Entra object ID must correlate to a ProvisioningRequest state, while the Employee entity needs the identifier that correlates to the Entra object ID (user).
 
 ### Trade-offs
 ### Pros
-* The entra user has an immutable state of its provisioning lifecycle using their entra object id as association
-* The provisioned entra user lives in the Employee entity via entra object id
+* The Entra user has an immutable state of its provisioning lifecycle using their Entra object ID as an association
+* The provisioned Entra user lives in the Employee entity via the Entra object ID
 
 ### Cons
 * Added complexity
@@ -58,26 +57,26 @@ Both are required because the entra object id must correlate to a ProvisioningRe
 
 # Release v0.9
 ### Decision
-Implemented OAuth2.0 using Microsoft Authentication Library for Java.
+Implemented OAuth 2.0 using the Microsoft Authentication Library for Java.
 
 ### Why
 To take advantage of Microsoft's automated token cache.
 
 ### Trade-offs
 ### Pros
-- Reduce complexity
+- Reduces complexity
 
 ---
 
 # Release v0.8
-- none
+- None
 
 # Release v0.7
 ### Decision
-transitionTo method in ProvisioningRequestService - implemented optimistic locking.
+The transitionTo method in ProvisioningRequestService implemented optimistic locking.
 
 ### Why
-To resolve a race condition where the orchestrator and a future addition such as a watchdog, would cause overwrites in the state transition.
+To resolve a race condition where the orchestrator and a future addition, such as a watchdog, would cause overwrites in the state transition.
 
 ### Trade-offs
 
@@ -88,17 +87,17 @@ To resolve a race condition where the orchestrator and a future addition such as
 
 ### Cons
 - A FAILED state transition may live in the database even if the lifecycle is completed
-- Currently, human intervention is needed to resolve this rare occurence
+- Currently, human intervention is needed to resolve this rare occurrence
 
 ---
 
-### Decision 
-An HR/caller generates and owns the idempotency key - IdempotencyRecord persists the provided key.
+### Decision
+An HR/caller generates and owns the idempotency key. IdempotencyRecord persists the provided key.
 
 ### Why
-To prevent a duplicate employee and race condition from happening.
+To prevent a duplicate employee and a race condition from happening.
 
-### Trade-Offs
+### Trade-offs
 
 ### Pros
 - Established ownership boundaries
@@ -111,10 +110,10 @@ To prevent a duplicate employee and race condition from happening.
 ---
 
 ### Decision
-The business logic for the persistent idempotency key, lives in its own service. 
+The business logic for the persistent idempotency key lives in its own service.
 
 ### Why
-Promotes decoupling and allows changes from other services to not impact the key's business logic. 
+Promotes decoupling and allows changes from other services to not impact the key's business logic.
 
 ---
 
@@ -127,8 +126,8 @@ The caller only cares about the employee's creation.
 ### Trade-offs
 
 ### Pros
-- The caller receives a non changed response
-- Any changes when the caller has not received a respone, get discarded from the response
+- The caller receives an unchanged response
+- Any changes when the caller has not received a response get discarded from the response
 - Decoupled idempotency record to preserve a response
 
 ### Cons
@@ -145,26 +144,26 @@ The orchestrator is a pure coordinator to wire the platform's lifecycle.
 ---
 
 ### Decision
-Fake graph provider provides custom exceptions - does not mock the real mechanics for groups & licenses.
+The fake Graph provider provides custom exceptions and does not mock the real mechanics for groups and licenses.
 
 ### Why
-The platform does have ownership of assigning the access plates to an employee - Microsoft Graph owns this mechanic.
-
----
-
-### Decision 
-Orchestrator must be called before markCompleted state in createEmployee mapping.
-
-### Why
-Prevents a bug where the orchestrator might never be called if the idempotency record state is marked as completed. 
+The platform does not have ownership of assigning the access plates to an employee. Microsoft Graph owns this mechanic.
 
 ---
 
 ### Decision
-Unit testing was only based of the orchestrator's outcomes.
+The orchestrator must be called before the markCompleted state in the createEmployee mapping.
 
 ### Why
-Other mechanics such as transitioning through other states have been unit tested previously - orchestrator trusts those services. 
+Prevents a bug where the orchestrator might never be called if the idempotency record state is marked as completed.
+
+---
+
+### Decision
+Unit testing was only based on the orchestrator's outcomes.
+
+### Why
+Other mechanics, such as transitioning through other states, have been unit tested previously. The orchestrator trusts those services.
 
 
 ---
@@ -175,19 +174,19 @@ Other mechanics such as transitioning through other states have been unit tested
 Did not implement atomicity in the provisioning request business logic.
 
 ### Why
-Audit events are wired in provisioning request business logic and they must live within failures.
+Audit events are wired in the provisioning request business logic, and they must live within failures.
 
 ---
 
 ### Decision
-Audit event service is decoupled from provisioning request.
+The audit event service is decoupled from the provisioning request.
 
 ### Why
-To keep single responsibility and have audit event retain ownership of all events.
+To keep single responsibility and have the audit event retain ownership of all events.
 
 ### Trade-offs
 
-### pros
+### Pros
 - Decouples responsibility
 - Makes maintainability easier
 - Easier to modify
@@ -197,7 +196,7 @@ To keep single responsibility and have audit event retain ownership of all event
 # Release v0.5
 
 ### Decision
-Provisioning request is an entity.
+The provisioning request is an entity.
 
 ### Why
 The entity is persistent because it must keep track of its legal states.
@@ -205,17 +204,17 @@ The entity is persistent because it must keep track of its legal states.
 ---
 
 ### Decision
-Idempotency was added to provisioning request.
+Idempotency was added to the provisioning request.
 
 ### Why
-The provisioning request must not take another active request of the same employee in progress. 
+The provisioning request must not take another active request of the same employee in progress.
 
 ---
 
 ### Decision
 A synchronous approach was taken for requests.
 
-### Why 
+### Why
 It ensures that each state of the provisioning request is completed.
 
 ---
@@ -241,15 +240,16 @@ They are the needed fields to begin provisioning.
 GlobalExceptionHandler handles all exceptions.
 
 ### Why
-Try/catch blocks repeated in controller methods, with inconsistent responses across endpoints.
+Try/catch blocks were repeated in controller methods, with inconsistent responses across endpoints.
 
 ### Trade-offs
 
-### pros
+### Pros
 - Decouples responsibility
 - Makes maintainability easier
 - Easier to modify
-___
+
+---
 
 
 # Release v0.2
@@ -303,7 +303,7 @@ Accepted as out of scope.
 
 ---
 
-### Decision 
+### Decision
 Separate HR from provisioning.
 
 ### Why
@@ -311,7 +311,7 @@ Employee information already exists in an HR system.
 
 ---
 
-### Decision 
+### Decision
 The provisioning platform will focus on onboarding requests instead of managing records.
 
 ### Why
@@ -327,7 +327,3 @@ This establishes a single source of truth for employee data and keeps the platfo
 #### Cons
 - Requires integration with an external system
 ---
-
-
-
-
